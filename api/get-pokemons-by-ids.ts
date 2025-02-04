@@ -1,5 +1,5 @@
 import { getPokemonById } from "./get-pokemon-by-id";
-import { Pokemon } from "../domain/entities/pokemon";
+import { Pokemon } from "@domain/entities/pokemon";
 
 export const getPokemonsById = async (ids: number[]): Promise<Pokemon[]> => {
   try {

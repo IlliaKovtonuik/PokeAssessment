@@ -2,16 +2,12 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { motion } from "framer-motion";
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { TabParamList } from '@/navigation/types/types';
 
-interface EvolutionTabProps {
-  route: {
-    params: {
-      data: {
-        sprites: string[];
-      };
-    };
-  };
-}
+
+type EvolutionTabProps = MaterialTopTabScreenProps<TabParamList, 'Skins'>;
+
 
 const EvolutionTab: FC<EvolutionTabProps> = ({ route }) => {
   const { data } = route.params;
@@ -30,7 +26,23 @@ const EvolutionTab: FC<EvolutionTabProps> = ({ route }) => {
       setIsLoading(false);
     }
   };
-
+  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1500);
+  
+      return () => clearTimeout(timer);
+    }, []);
+  
+  
+    if (isLoading) {
+      return (
+        <Box sx={styles.loaderContainer}>
+          <CircularProgress size={50} color="primary" />
+        </Box>
+      );
+    }
   return (
     <Box sx={styles.container}>
       <Grid container spacing={2} sx={styles.gridContainer}>
@@ -65,14 +77,22 @@ export default EvolutionTab;
 const styles = {
   container: {
     p: 2,
-    height: "100vh", // Повноекранна висота
-    overflowY: "auto", // Вертикальний скролінг
-    backgroundColor: "#fafafa", // Легкий фон для контрасту
+    height: "100vh", 
+    overflowY: "auto",
+    backgroundColor: "#fafafa", 
     display: "flex",
     justifyContent: "center",
   },
   gridContainer: {
     width: "100%",
+  },
+  loaderContainer: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh", 
+    backgroundColor: "#f9f9f9", 
   },
   imageWrapper: {
     width: "100%",
@@ -83,7 +103,7 @@ const styles = {
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
     padding: 1,
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Легка тінь для глибини
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
   },
   imageContainer: {
     width: 180,

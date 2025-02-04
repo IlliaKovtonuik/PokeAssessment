@@ -1,22 +1,9 @@
 "use dom";
 import React, { FC } from "react";
 import { Box, Grid, Typography, Paper } from "@mui/material";
-
-interface Move {
-  name: string;
-  level: number;
-}
-
-interface MovesTabProps {
-  route: {
-    params: {
-      data: {
-        moves: Move[];
-      };
-    };
-  };
-}
-
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { TabParamList } from '@/navigation/types/types';
+type MovesTabProps = MaterialTopTabScreenProps<TabParamList, 'Moves'>;
 const MovesTab: FC<MovesTabProps> = ({ route }) => {
   const { data } = route.params;
   const { moves } = data;

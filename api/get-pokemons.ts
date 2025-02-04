@@ -1,10 +1,10 @@
 import type {
   PokeAPIPaginatedResponse,
   PokeAPIPokemon,
-} from "../utils/helpers/interfaces/pokeApi.interface";
-import { pokeApi } from "../config/api/pokeApi";
-import { Pokemon } from "../domain/entities/pokemon";
-import { PokemonMapper } from "../utils/helpers/mappers/pokemon.mapper";
+} from "@utils/helpers/interfaces/pokeApi.interface";
+import { pokeApi } from "@config/api/pokeApi";
+import { Pokemon } from "@domain/entities/pokemon";
+import { PokemonMapper } from "@utils/helpers/mappers/pokemon.mapper";
 
 export const getPokemons = async (
   page: number,

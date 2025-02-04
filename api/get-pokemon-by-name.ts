@@ -1,7 +1,7 @@
-import { pokeApi } from "../config/api/pokeApi";
-import { Pokemon } from "../domain/entities/pokemon";
-import { PokeAPIPokemon } from "../utils/helpers/interfaces/pokeApi.interface";
-import { PokemonMapper } from "../utils/helpers/mappers/pokemon.mapper";
+import { pokeApi } from "@config/api/pokeApi";
+import { Pokemon } from "@domain/entities/pokemon";
+import { PokeAPIPokemon } from "@utils/helpers/interfaces/pokeApi.interface";
+import { PokemonMapper } from "@utils/helpers/mappers/pokemon.mapper";
 
 export const getPokemonByName = async (name: string): Promise<Pokemon> => {
   try {

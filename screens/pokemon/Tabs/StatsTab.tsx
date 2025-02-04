@@ -2,22 +2,11 @@
 import React, { FC, useEffect, useState } from "react";
 import { Box, Divider, CircularProgress } from "@mui/material";
 import { Stat } from "./Stat";
+import { TabParamList } from '@navigation/types/types';
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 
-interface StatData {
-  name: string;
-  value: number;
-}
 
-interface StatsTabProps {
-  route: {
-    params: {
-      data: {
-        stats: StatData[];
-      };
-    };
-  };
-}
-
+type StatsTabProps = MaterialTopTabScreenProps<TabParamList, 'Stats'>;
 const StatsTab: FC<StatsTabProps> = ({ route }) => {
   const { data } = route.params;
   const stats = data.stats;
@@ -74,7 +63,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "100vh", // Займає всю висоту екрана для центрування
-    backgroundColor: "#f9f9f9", // Легкий фон для кращої видимості
+    height: "100vh", 
+    backgroundColor: "#f9f9f9", 
   },
 };

@@ -21,13 +21,12 @@ const PokemonScreen = () => {
     staleTime: 1000 * 60 * 60,
   });
   if (!pokemon || isLoading || !additionalInfo || isDataLoading) {
-    return <FullScreenLoader testID="full-screen-loader" />;
+    return <FullScreenLoader  />;
   }
   const pokemonColor = getTypeColor(pokemon.types);
   return (
     <View testID="pokemon-screen" style={styles.container}>
       <Header
-        testID="pokemon-header"
         backgroundColor={pokemonColor[0]}
         picture={pokemon?.avatar}
         name={pokemon.name}
@@ -36,7 +35,6 @@ const PokemonScreen = () => {
       />
       <View style={styles.tabsContainer}>
         <TabNavigator
-          testID="tab-navigator"
           pokemon={pokemon}
           additionalInfo={additionalInfo}
         />

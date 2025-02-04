@@ -1,6 +1,6 @@
-import { pokeApi } from "../config/api/pokeApi";
-import { maxPokedexId } from "../config/pokedex";
-import { PokeAPIPaginatedResponse } from "../utils/helpers/interfaces/pokeApi.interface";
+import { pokeApi } from "@config/api/pokeApi";
+import { maxPokedexId } from "@config/pokedex";
+import { PokeAPIPaginatedResponse } from "@utils/helpers/interfaces/pokeApi.interface";
 
 export const getAllBasicPokemons = async () => {
   try {

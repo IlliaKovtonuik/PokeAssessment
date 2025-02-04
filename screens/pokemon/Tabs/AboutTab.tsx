@@ -1,5 +1,5 @@
 "use dom";
-import React, { FC } from "react";
+import React, { FC,useState,useEffect } from "react";
 import {
   Box,
   Typography,
@@ -8,48 +8,32 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { getEnglishFlavorText } from "@/utils/convertUnits";
+import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
+import { TabParamList } from "@/navigation/types/types";
 
-interface Ability {
-  name: string;
-}
+type AboutTabProps = MaterialTopTabScreenProps<TabParamList, "About">;
 
-interface EggGroup {
-  name: string;
-}
-
-interface DetailedInfo {
-  base_happiness: number;
-  capture_rate: number;
-  habitat?: {
-    name: string;
-  };
-  is_baby: boolean;
-  is_mythical: boolean;
-  is_legendary: boolean;
-  egg_groups: EggGroup[];
-}
-
-interface Pokemon {
-  abilities: Ability[];
-  avatar: string;
-  name: string;
-  id: number;
-}
-
-interface AboutTabParams {
-  data: Pokemon;
-  info: DetailedInfo;
-}
-
-interface AboutTabProps {
-  route: {
-    params: AboutTabParams;
-  };
-}
-
-const AboutTab: FC<AboutTabProps> = ({ route }) => {
+const AboutTab: React.FC<AboutTabProps> = ({ route, navigation }) => {
   const { data, info } = route.params;
   const pokemon = data;
+  const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1500);
+  
+      return () => clearTimeout(timer);
+    }, []);
+  
+  
+    if (isLoading) {
+      return (
+        <Box sx={styles.loaderContainer}>
+          <CircularProgress size={50} color="primary" />
+        </Box>
+      );
+    }
   const detailedInfo = info;
   const eggGroups = detailedInfo.egg_groups.map((item) => item.name).join(", ");
   return (
@@ -99,6 +83,14 @@ const styles = {
     fontWeight: "bold",
     mb: 2,
     color: "#d32f2f",
+  },
+  loaderContainer: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh", 
+    backgroundColor: "#f9f9f9", 
   },
   infoBox: {
     p: 2,
