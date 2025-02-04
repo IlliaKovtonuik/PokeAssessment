@@ -1,48 +1,62 @@
-import React from "react";
-import { FlatList, Text, StyleSheet, View } from "react-native";
+"use dom";
+import React, { FC } from "react";
+import { Box, Grid, Typography, Paper } from "@mui/material";
 
-export const MovesTab = ({ route }) => {
+interface Move {
+  name: string;
+  level: number;
+}
+
+interface MovesTabProps {
+  route: {
+    params: {
+      data: {
+        moves: Move[];
+      };
+    };
+  };
+}
+
+const MovesTab: FC<MovesTabProps> = ({ route }) => {
   const { data } = route.params;
   const { moves } = data;
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={moves}
-        keyExtractor={(item) => item.name}
-        numColumns={3}
-        columnWrapperStyle={styles.columnWrapper}
-        renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemLevel}>{item.level}lvl</Text>
-          </View>
-        )}
-      />
-    </View>
+    <Box sx={styles.container}>
+      <Grid container spacing={2}>
+        {moves.map((move) => (
+          <Grid item xs={4} key={move.name}>
+            <Paper elevation={2} sx={styles.itemContainer}>
+              <Typography sx={styles.itemName}>{move.name}</Typography>
+              <Typography sx={styles.itemLevel}>{move.level} lvl</Typography>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
-
-const styles = StyleSheet.create({
+export default MovesTab;
+const styles = {
   container: {
-    paddingVertical: 15,
-    flex: 1,
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
-    marginBottom: 10,
+    py: 2,
+    px: 2,
   },
   itemContainer: {
-    // робимо ширину ~1/3
-    width: "30%",
-    alignItems: "flex-start",
+    padding: 1,
+    textAlign: "center",
+    borderRadius: 2,
+    backgroundColor: "#f9f9f9",
+    boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.1)",
   },
   itemName: {
     textTransform: "capitalize",
-    fontWeight: "bold",
+    fontWeight: 600,
+    fontSize: "14px",
+    color: "#333",
   },
   itemLevel: {
-    fontSize: 12,
-    color: "#555",
+    fontSize: "12px",
+    color: "#777",
   },
-});
+};

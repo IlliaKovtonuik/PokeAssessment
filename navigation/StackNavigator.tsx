@@ -1,16 +1,15 @@
-import { Stack } from 'expo-router'
+import { Stack } from "expo-router";
 
 const StackNavigator = () => {
   return (
     <Stack
       screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}
     >
-      <Stack.Screen name="index" options={{title: 'Home'}}/>
-      <Stack.Screen name="pokemon" options={{title: 'Pokemon'}}/>
-      <Stack.Screen name="search" options={{title: 'Search'}}/>
+      <Stack.Screen name="index" options={{ title: "Home" }} />
+      <Stack.Screen name="pokemon" options={{ title: "Pokemon" }} />
     </Stack>
-  )
-}
-export default StackNavigator
+  );
+};
+export default StackNavigator;

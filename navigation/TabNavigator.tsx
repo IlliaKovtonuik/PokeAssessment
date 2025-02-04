@@ -1,12 +1,13 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import {
+  AboutTab,
+  StatsTab,
+  EvolutionTab,
+  MovesTab,
+} from "@/screens/Pokemon/Tabs";
 
-import AboutTab from "../screens/Pokemon/Tabs/AboutTab";
-import { StatsTab } from "../screens/Pokemon/Tabs/StatsTab";
-import { EvolutionTab } from "../screens/Pokemon/Tabs/EvolutionTab";
-import { MovesTab } from "../screens/Pokemon/Tabs/MovesTab";
-
-import { colors } from "../config/theme/colors";
+import { colors } from "@/config/theme/colors";
 
 const Tab = createMaterialTopTabNavigator();
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 export const TabNavigator: React.FC<Props> = ({ pokemon, additionalInfo }) => {
   return (
     <Tab.Navigator
+      testID="tab-navigator"
       screenOptions={{
         tabBarStyle: {
           backgroundColor: "transparent",

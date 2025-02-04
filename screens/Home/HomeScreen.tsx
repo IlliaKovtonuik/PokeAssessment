@@ -1,22 +1,23 @@
-import React, { useContext, useState } from "react";
-import { getPokemons, getPokemonByName } from "../../api";
+import React, { useState } from "react";
+import { getPokemons, getPokemonByName } from "@/api";
 import {
   useInfiniteQuery,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import { FlatList, StyleSheet, View } from "react-native";
-import { FAB, Icon, Text, TextInput } from "react-native-paper";
-import PokeballBg from "../../components/ui/PokeballBg";
-import { theme } from "../../config/theme/global-theme";
+import { Text, TextInput } from "react-native-paper";
+import PokeballBg from "@/components/PokeballBg/PokeballBg";
+import { theme } from "@/config/theme/global-theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import PokemonCard from "../../components/pokemon/PokemonCard/PokemonCard";
-import { colors } from "../../config/theme/colors";
-import InputWithIcon from "../../components/Search/Search";
+import PokemonCard from "@/components/PokemonCard/PokemonCard";
+import { colors } from "@/config/theme/colors";
+
 const HomeScreen = () => {
   const queryClient = useQueryClient();
   const { top } = useSafeAreaInsets();
   const [query, setQuery] = useState("");
+
   const { isLoading, data, fetchNextPage } = useInfiniteQuery({
     queryKey: ["pokemons", "infinite"],
     initialPageParam: 0,
@@ -56,40 +57,36 @@ const HomeScreen = () => {
     : localPokemons;
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }} testID="home-screen">
       <View style={[styles.header, { paddingTop: top, alignItems: "center" }]}>
-        <View>
-          <Text
-            style={{
-              fontFamily: "CustomFont",
-              fontSize: 38,
-              lineHeight: 60,
-              color: "white",
-            }}
-          >
-            Pokedex
-          </Text>
-        </View>
+        <Text style={styles.title}>Pokedex</Text>
         <TextInput
+          testID="search-input"
           placeholder="Search Pokémon..."
           value={query}
           onChangeText={setQuery}
           mode="outlined"
-          left={<TextInput.Icon icon="magnify" />}
+          left={(props) => <TextInput.Icon {...props} icon="magnify" />}
           style={styles.searchInput}
           outlineStyle={{ borderRadius: 25 }}
         />
-
-        {isSearchLoading && <Text>Searching...</Text>}
-        {searchError && <Text>Pokémon not found</Text>}
+        {isSearchLoading && (
+          <Text testID="searching-indicator">Searching...</Text>
+        )}
+        {searchError && <Text testID="error-message">Pokémon not found</Text>}
       </View>
+
       <PokeballBg style={styles.imgPosition} />
+
       <View style={theme.globalMargin}>
         <FlatList
+          testID="pokemon-list"
           data={displayData}
           keyExtractor={(pokemon, index) => `${pokemon.id}-${index}`}
           numColumns={2}
-          renderItem={({ item }) => <PokemonCard pokemon={item} />}
+          renderItem={({ item }) => (
+            <PokemonCard pokemon={item} testID={`pokemon-card-${item.name}`} />
+          )}
           onEndReached={query.trim() ? null : () => fetchNextPage()}
           onEndReachedThreshold={0.6}
         />
@@ -108,10 +105,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.red,
     height: 200,
     width: "100%",
-    marginHorizontal: 0,
-    display: "flex",
     justifyContent: "center",
     marginBottom: 20,
+  },
+  title: {
+    fontFamily: "CustomFont",
+    fontSize: 38,
+    lineHeight: 60,
+    color: "white",
   },
   searchInput: {
     marginBottom: 8,

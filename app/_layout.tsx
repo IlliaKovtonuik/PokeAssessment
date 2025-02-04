@@ -1,5 +1,5 @@
-import StackNavigator from "../navigation/StackNavigator";
-import { ThemeContextProvider } from "../utils/ThemeContext";
+import StackNavigator from "@/navigation/StackNavigator";
+import { ThemeContextProvider } from "@/utils/ThemeContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();

@@ -1,13 +1,12 @@
-import { getPokemonById, getPokemonSpeciesById } from "../../api";
+import { getPokemonById, getPokemonSpeciesById } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { View, ScrollView, StyleSheet, FlatList, Image } from "react-native";
-import FullScreenLoader from "../../components/ui/FullScreenLoader";
-import { getTypeColor } from "../../config/helpers/getTypeColor";
-import { TabNavigator } from "../../navigation/TabNavigator";
-import { Header } from "../../components/Header";
-import Stats from "./Stats";
-import React from "react";
+import FullScreenLoader from "@/components/Loader/FullScreenLoader";
+import { getTypeColor } from "@/config/helpers/getTypeColor";
+import { TabNavigator } from "@/navigation/TabNavigator";
+import { Header } from "@/components";
+import React, { Fragment } from "react";
 const PokemonScreen = () => {
   const { pokemonId, reverse } = useLocalSearchParams();
 
@@ -22,12 +21,13 @@ const PokemonScreen = () => {
     staleTime: 1000 * 60 * 60,
   });
   if (!pokemon || isLoading || !additionalInfo || isDataLoading) {
-    return <FullScreenLoader />;
+    return <FullScreenLoader testID="full-screen-loader" />;
   }
   const pokemonColor = getTypeColor(pokemon.types);
   return (
-    <>
+    <View testID="pokemon-screen" style={styles.container}>
       <Header
+        testID="pokemon-header"
         backgroundColor={pokemonColor[0]}
         picture={pokemon?.avatar}
         name={pokemon.name}
@@ -35,13 +35,20 @@ const PokemonScreen = () => {
         id={pokemon.id}
       />
       <View style={styles.tabsContainer}>
-        <TabNavigator pokemon={pokemon} additionalInfo={additionalInfo} />
+        <TabNavigator
+          testID="tab-navigator"
+          pokemon={pokemon}
+          additionalInfo={additionalInfo}
+        />
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   tabsContainer: {
     width: "100%",
     backgroundColor: "transperent",

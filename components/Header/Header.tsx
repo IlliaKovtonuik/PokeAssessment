@@ -2,7 +2,7 @@ import React, { memo, useCallback, useMemo } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { Pokeball } from "./pokemon/Pokeball";
+import { Pokeball } from "@/components";
 
 interface HeaderProps {
   backgroundColor: string;
@@ -16,8 +16,7 @@ function formatPokemonId(id: number | string): string {
   if (id == null) return "000";
   return String(id).padStart(3, "0");
 }
-
-export const Header = memo(function Header({
+const Header = memo(function Header({
   backgroundColor,
   picture,
   name,
@@ -33,7 +32,10 @@ export const Header = memo(function Header({
   const formattedId = useMemo(() => formatPokemonId(id), [id]);
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
+    <View
+      testID="pokemon-header"
+      style={[styles.container, { backgroundColor }]}
+    >
       <View style={styles.square} />
 
       <View style={styles.cta}>
@@ -66,7 +68,7 @@ export const Header = memo(function Header({
     </View>
   );
 });
-
+export default Header;
 const styles = StyleSheet.create({
   container: {
     width: "100%",

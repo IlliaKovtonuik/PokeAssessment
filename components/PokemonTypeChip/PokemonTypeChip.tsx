@@ -1,5 +1,5 @@
-import { getTypeColor } from "../../config/helpers/getTypeColor";
-import { PokemonType } from "../../domain/entities/pokemon";
+import { getTypeColor } from "@/config/helpers/getTypeColor";
+import { PokemonType } from "@/domain/entities/pokemon";
 import { View, Text, StyleSheet } from "react-native";
 
 interface Props {

@@ -7,18 +7,14 @@ type Props = {
   position?: number;
 };
 
-export const Pokeball = ({
-  color = "white",
-  size = 300,
-  position = -80,
-}: Props) => {
-  const pokeballWhite = require("../../assets/pokeball-white.png");
-  const pokeballGray = require("../../assets/pokeball.png");
+const Pokeball = ({ color = "white", size = 300, position = -80 }: Props) => {
+  const pokeballWhite = require("@/assets/pokeball-white.png");
+  const pokeballGray = require("@/assets/pokeball.png");
   const pokeballSelected = color === "white" ? pokeballWhite : pokeballGray;
 
   return <Image source={pokeballSelected} style={styles(size, position).img} />;
 };
-
+export default Pokeball;
 const styles = (size: number, position: number) =>
   StyleSheet.create({
     img: {

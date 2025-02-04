@@ -8,9 +8,18 @@ export const getPokemonByName = async (name: string): Promise<Pokemon> => {
     const { data } = await pokeApi.get<PokeAPIPokemon>(
       `/pokemon/${name.toLowerCase()}`
     );
-    const pokemon = await PokemonMapper.fromPokeApiToEntity(data);
-    return [pokemon];
-  } catch (error) {
-    throw new Error("Error getting a Pokemon");
+    const pokemon = PokemonMapper.fromPokeApiToEntity(data);
+
+    return pokemon;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(
+        `API Error: ${error.response.status} - ${error.response.statusText}`
+      );
+    } else if (error.request) {
+      throw new Error("No response received from the server.");
+    } else {
+      throw new Error(`Error getting a Pokemon: ${error.message}`);
+    }
   }
 };

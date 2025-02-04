@@ -12,6 +12,7 @@ import {
 import {
   adaptNavigationTheme,
   Provider as PaperProvider,
+  MD3LightTheme,
 } from "react-native-paper";
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
@@ -21,13 +22,16 @@ const { LightTheme, DarkTheme } = adaptNavigationTheme({
 
 export const ThemeContext = createContext({
   isDark: false,
+  // Початкове значення – хай буде Light, щоби TS не лаявся
   theme: LightTheme,
 });
 
 export const ThemeContextProvider = ({ children }: PropsWithChildren) => {
   const colorScheme = useColorScheme();
   const isDarkTheme = colorScheme === "dark";
-  let theme = isDarkTheme ? DarkTheme : LightTheme;
+
+  // === 2) ВИБИРАЄМО ТЕМУ ЗАЛЕЖНО ВІД colorScheme ===
+  const theme = isDarkTheme ? DarkTheme : LightTheme;
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -48,7 +52,7 @@ export const ThemeContextProvider = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={MD3LightTheme}>
       <NavigationThemeProvider value={theme}>
         <ThemeContext.Provider
           value={{

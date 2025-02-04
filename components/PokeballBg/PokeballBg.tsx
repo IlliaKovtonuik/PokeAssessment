@@ -7,7 +7,7 @@ import {
   ImageStyle,
   Image,
 } from "react-native";
-import { ThemeContext } from "../../utils/ThemeContext";
+import { ThemeContext } from "@/utils/ThemeContext";
 interface Props {
   style?: StyleProp<ImageStyle>;
 }
@@ -15,8 +15,8 @@ interface Props {
 const PokeballBg = ({ style }: Props) => {
   const { isDark } = useContext(ThemeContext);
   const pokeballImg = isDark
-    ? require("../../assets/pokeball-light.png")
-    : require("../../assets/pokeball-dark.png");
+    ? require("@/assets/pokeball-light.png")
+    : require("@/assets/pokeball-dark.png");
   return (
     <Image
       source={pokeballImg}

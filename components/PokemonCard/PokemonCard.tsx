@@ -1,12 +1,12 @@
-import { Pokemon } from "../../../domain/entities/pokemon";
+import { Pokemon } from "../../domain/entities/pokemon";
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import { Text } from "react-native-paper";
-import { FadeInImage } from "../../ui/FadeInImage";
-import { getTypeColor } from "../../../config/helpers/getTypeColor";
+import { FadeInImage } from "@/components";
+import { getTypeColor } from "@/config/helpers/getTypeColor";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
-import { ThemeContext } from "../../../utils/ThemeContext";
-import PokemonTypeChip from "../PokemonTypeChip";
+import { ThemeContext } from "@/utils/ThemeContext";
+import { PokemonTypeChip } from "@/components";
 interface Props {
   pokemon: Pokemon;
 }
@@ -17,8 +17,8 @@ const PokemonCard = ({ pokemon }: Props) => {
   const router = useRouter();
 
   const pokeballImg = isDark
-    ? require("../../../assets/pokeball-dark.png")
-    : require("../../../assets/pokeball-light.png");
+    ? require("@/assets/pokeball-dark.png")
+    : require("@/assets/pokeball-light.png");
 
   return (
     <Pressable
@@ -32,10 +32,10 @@ const PokemonCard = ({ pokemon }: Props) => {
     >
       <View style={[styles.cardContainer, { backgroundColor: typesColors[0] }]}>
         <View>
-          <Text style={styles.name} variant="heavy">
+          <Text style={styles.name} variant="titleLarge">
             {pokemon.name}
           </Text>
-          <Text style={styles.name} variant="heavy">
+          <Text style={styles.name} variant="titleLarge">
             #{pokemon.id}
           </Text>
         </View>
@@ -46,7 +46,11 @@ const PokemonCard = ({ pokemon }: Props) => {
         </View>
 
         {/* Pokemon Image */}
-        <FadeInImage uri={pokemon.avatar} style={styles.pokemonImage} />
+        <FadeInImage
+          testID="pokemon-image" // ✅ Added testID
+          uri={pokemon.avatar}
+          style={styles.pokemonImage}
+        />
 
         {/* Types */}
         <View style={{ gap: 2, marginTop: "auto" }}>

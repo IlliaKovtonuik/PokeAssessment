@@ -1,66 +1,85 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { colors } from "../../../config/theme/colors";
+"use dom";
+import React, { FC } from "react";
+import { Box, Typography } from "@mui/material";
+import { green, red, grey, blue } from "@mui/material/colors";
 
-type StatProps = {
+interface StatProps {
   name: string;
   baseStat: number;
-  percetange: number;
-};
+  maxStat: number;
+  isTotal?: boolean;
+}
 
-export const Stat = ({ name, baseStat, percetange }: StatProps) => {
+export const Stat: FC<StatProps> = ({
+  name,
+  baseStat,
+  maxStat,
+  isTotal = false,
+}) => {
   const statisticName = (name: string): string => {
     switch (name) {
       case "special-attack":
-        return "Sp. Attack";
+        return "Sp. Atk";
       case "special-defense":
-        return "Sp. Defense";
+        return "Sp. Def";
       default:
-        return name;
+        return name.charAt(0).toUpperCase() + name.slice(1);
     }
   };
 
+  const progressPercentage = Math.min((baseStat / maxStat) * 100, 100);
+  const progressColor = isTotal
+    ? blue[500]
+    : baseStat < 75
+    ? red[500]
+    : green[500];
+
   return (
-    <View style={styles.stat}>
-      <Text style={styles.title}>{statisticName(name)}:</Text>
-      <View style={styles.progressWrap}>
-        <View
-          style={{
-            ...styles.progress,
-            backgroundColor: baseStat < 75 ? colors.red : colors.green,
-            width: (baseStat * 100) / percetange + "%",
+    <Box sx={styles.statRow}>
+      <Typography sx={styles.title}>{statisticName(name)}</Typography>
+      <Typography sx={styles.statValue}>{baseStat}</Typography>
+      <Box sx={styles.progressBarContainer}>
+        <Box
+          sx={{
+            ...styles.progressBar,
+            width: `${progressPercentage}%`,
+            backgroundColor: progressColor,
           }}
         />
-      </View>
-      <Text style={styles.statNumber}>{baseStat}</Text>
-    </View>
+      </Box>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
-  stat: {
+const styles = {
+  statRow: {
     display: "flex",
-    flexDirection: "row",
     alignItems: "center",
-    marginBottom: 13,
+    mb: 1.5,
   },
   title: {
-    width: 90,
-    color: colors.gray,
+    width: 80,
+    fontWeight: 600,
+    color: grey[800],
     textTransform: "capitalize",
   },
-  progressWrap: {
+  statValue: {
+    width: 40,
+    textAlign: "center",
+    fontWeight: 700,
+    color: grey[900],
+  },
+  progressBarContainer: {
     flexGrow: 1,
-    height: 5,
-    backgroundColor: "#e0e0e0",
+    height: 8,
+    backgroundColor: grey[300],
+    borderRadius: 4,
     overflow: "hidden",
-    borderRadius: 5,
+    ml: 1,
   },
-  progress: {
-    height: 5,
+  progressBar: {
+    height: "100%",
+    borderRadius: 4,
+    transition: "width 0.3s ease-in-out",
   },
-  statNumber: {
-    width: 35,
-    textAlign: "right",
-  },
-});
+};
