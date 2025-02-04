@@ -35,7 +35,7 @@ export const TabNavigator: React.FC<Props> = ({ pokemon, additionalInfo }) => {
         initialParams={{ data: pokemon, info: additionalInfo }}
       />
       <Tab.Screen
-        name="Base Stats"
+        name="Stats"
         component={StatsTab}
         initialParams={{ data: pokemon }}
       />
