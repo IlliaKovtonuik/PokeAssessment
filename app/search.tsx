@@ -1,4 +1,4 @@
-import SearchScreen from "../screens/search/SearchScreen";
+import SearchScreen from "../screens/Search/SearchScreen";
 
 const SearchRoute = () => {
   return <SearchScreen />;

@@ -7,7 +7,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import PokemonCard from "../../components/pokemon/PokemonCard";
+import PokemonCard from "../../components/pokemon/PokemonCard/PokemonCard";
 import { useContext, useMemo, useState } from "react";
 import { ThemeContext } from "../../utils/ThemeContext";
 import { useQuery } from "@tanstack/react-query";
@@ -35,7 +35,6 @@ const SearchScreen = () => {
       return pokemon ? [pokemon] : [];
     }
 
-    // Is a string
     if (debouncedSearchTerm.length < 3) return [];
 
     return pokemonNameList.filter((pokemon) =>

@@ -1,4 +1,4 @@
-import PokemonScreen from "../screens/pokemon/PokemonScreen";
+import PokemonScreen from "../screens/Pokemon/PokemonScreen";
 const PokemonRoute = () => {
   return <PokemonScreen />;
 };

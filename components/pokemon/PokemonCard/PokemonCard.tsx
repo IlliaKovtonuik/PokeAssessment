@@ -1,13 +1,12 @@
-import { Pokemon } from "../../domain/entities/pokemon";
+import { Pokemon } from "../../../domain/entities/pokemon";
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import { Text } from "react-native-paper";
-import { FadeInImage } from "../ui/FadeInImage";
-import { getTypeColor } from "../../config/helpers/getTypeColor";
+import { FadeInImage } from "../../ui/FadeInImage";
+import { getTypeColor } from "../../../config/helpers/getTypeColor";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
-import { ThemeContext } from "../../utils/ThemeContext";
-import PokemonTypeChip from "./PokemonTypeChip";
-
+import { ThemeContext } from "../../../utils/ThemeContext";
+import PokemonTypeChip from "../PokemonTypeChip";
 interface Props {
   pokemon: Pokemon;
 }
@@ -18,8 +17,8 @@ const PokemonCard = ({ pokemon }: Props) => {
   const router = useRouter();
 
   const pokeballImg = isDark
-    ? require("../../assets/pokeball-dark.png")
-    : require("../../assets/pokeball-light.png");
+    ? require("../../../assets/pokeball-dark.png")
+    : require("../../../assets/pokeball-light.png");
 
   return (
     <Pressable

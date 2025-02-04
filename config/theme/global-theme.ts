@@ -2,11 +2,11 @@ import { StyleSheet } from "react-native";
 
 export const theme = StyleSheet.create({
   globalMargin: {
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   rightFab: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
-    right: 20
-  }
-})
+    right: 20,
+  },
+});

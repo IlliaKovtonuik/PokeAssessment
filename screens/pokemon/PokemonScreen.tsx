@@ -1,21 +1,14 @@
-import { getPokemonById } from "../../api";
+import { getPokemonById, getPokemonSpeciesById } from "../../api";
 import { useQuery } from "@tanstack/react-query";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { View, ScrollView, StyleSheet, FlatList, Image } from "react-native";
 import FullScreenLoader from "../../components/ui/FullScreenLoader";
-import { Chip, FAB, Text, IconButton } from "react-native-paper";
-import { FadeInImage } from "../../components/ui/FadeInImage";
 import { getTypeColor } from "../../config/helpers/getTypeColor";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useContext } from "react";
-import { ThemeContext } from "../../utils/ThemeContext";
-import PokemonTypeChip from "../../components/pokemon/PokemonTypeChip";
-import { maxPokedexId } from "../../config/pokedex";
-
+import { TabNavigator } from "../../navigation/TabNavigator";
+import { Header } from "../../components/Header";
+import Stats from "./Stats";
+import React from "react";
 const PokemonScreen = () => {
-  const router = useRouter();
-  const { isDark } = useContext(ThemeContext);
-  const { top } = useSafeAreaInsets();
   const { pokemonId, reverse } = useLocalSearchParams();
 
   const { isLoading, data: pokemon } = useQuery({
@@ -23,194 +16,39 @@ const PokemonScreen = () => {
     queryFn: () => getPokemonById(Number(pokemonId)),
     staleTime: 1000 * 60 * 60,
   });
-
-  // Попереднє завантаження даних для наступного та попереднього покемона
-  useQuery({
-    queryKey: ["pokemon", Number(pokemonId) + 1],
-    queryFn: () => getPokemonById(Number(pokemonId) + 1),
+  const { isLoading: isDataLoading, data: additionalInfo } = useQuery({
+    queryKey: ["pokemonInfo", pokemonId],
+    queryFn: () => getPokemonSpeciesById(Number(pokemonId)),
     staleTime: 1000 * 60 * 60,
   });
-  useQuery({
-    queryKey: ["pokemon", Number(pokemonId) - 1],
-    queryFn: () => getPokemonById(Number(pokemonId) - 1),
-    staleTime: 1000 * 60 * 60,
-  });
-
-  const pokeballImg = isDark
-    ? require("../../assets/pokeball-dark.png")
-    : require("../../assets/pokeball-light.png");
-
-  if (!pokemon || isLoading) {
+  if (!pokemon || isLoading || !additionalInfo || isDataLoading) {
     return <FullScreenLoader />;
   }
-
   const pokemonColor = getTypeColor(pokemon.types);
-
   return (
     <>
-      {/* Вимикаємо стандартний хедер */}
-      <Stack.Screen
-        options={{
-          headerShown: false,
-          animation: reverse ? "slide_from_left" : "slide_from_right",
-        }}
+      <Header
+        backgroundColor={pokemonColor[0]}
+        picture={pokemon?.avatar}
+        name={pokemon.name}
+        types={pokemon?.types}
+        id={pokemon.id}
       />
-
-      {/* Кастомний хедер */}
-      <View style={[styles.customHeader, { marginTop: top + 16 }]}>
-        {/* Кнопка "назад" */}
-        <IconButton
-          icon="arrow-left"
-          size={24}
-          iconColor="white"
-          onPress={() => router.back()}
-          style={styles.backButton}
-        />
-        {/* Контейнер з текстом, що позиціонується по центру */}
-        <View style={styles.headerTitleContainer}>
-          <Text style={styles.headerTitle} variant="pokeFont">
-            {pokemon.name}
-          </Text>
-        </View>
+      <View style={styles.tabsContainer}>
+        <TabNavigator pokemon={pokemon} additionalInfo={additionalInfo} />
       </View>
-
-      <ScrollView
-        style={{ flex: 1, backgroundColor: pokemonColor[0] }}
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Контейнер з покеболом та зображенням покемона */}
-        <View style={styles.headerContainer}>
-          <Image source={pokeballImg} style={styles.pokeball} />
-          <FadeInImage uri={pokemon.avatar} style={styles.pokemonImage} />
-        </View>
-
-        {/* Типи */}
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 20,
-            marginTop: 10,
-            gap: 8,
-          }}
-        >
-          {pokemon.types.map((type) => (
-            <PokemonTypeChip key={type} type={type} size="large" />
-          ))}
-        </View>
-
-        {/* Sprites */}
-        <Text style={styles.subTitle}>Skins</Text>
-        <FlatList
-          data={pokemon.sprites}
-          horizontal
-          keyExtractor={(item, index) => `${item}-${index}`}
-          showsHorizontalScrollIndicator={false}
-          centerContent
-          style={{
-            marginTop: 20,
-            height: 100,
-          }}
-          renderItem={({ item }) => (
-            <FadeInImage
-              uri={item}
-              style={{ width: 100, height: 100, marginHorizontal: 5 }}
-            />
-          )}
-        />
-
-        <Text style={styles.subTitle}>Abilities</Text>
-        <FlatList
-          data={pokemon.abilities}
-          horizontal
-          keyExtractor={(key) => key}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <Chip selectedColor="white">
-              <Text
-                variant="medium"
-                style={{ fontSize: 16, textTransform: "capitalize" }}
-              >
-                {item}
-              </Text>
-            </Chip>
-          )}
-        />
-
-        <Text style={styles.subTitle}>Stats</Text>
-        <FlatList
-          data={pokemon.stats}
-          horizontal
-          keyExtractor={(key) => key.name}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <View style={styles.statsContainer}>
-              <Text
-                style={{
-                  flex: 1,
-                  color: "white",
-                  textTransform: "capitalize",
-                }}
-              >
-                {item.name}
-              </Text>
-              <Text style={{ color: "white" }}>{item.value}</Text>
-            </View>
-          )}
-        />
-
-        <Text style={styles.subTitle}>Moves</Text>
-        <FlatList
-          data={pokemon.moves}
-          horizontal
-          keyExtractor={(key) => key.name}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <View style={styles.statsContainer}>
-              <Text
-                style={{
-                  flex: 1,
-                  color: "white",
-                  textTransform: "capitalize",
-                }}
-              >
-                {item.name}
-              </Text>
-              <Text style={{ color: "white" }}>Lv.{item.level}</Text>
-            </View>
-          )}
-        />
-
-        <Text style={styles.subTitle}>Games</Text>
-        <FlatList
-          data={pokemon.games}
-          horizontal
-          keyExtractor={(key) => key}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <Chip selectedColor="white">
-              <Text
-                variant="regular"
-                style={{
-                  borderWidth: 1,
-                  borderColor: "white",
-                  borderRadius: 10,
-                  paddingHorizontal: 8,
-                  textTransform: "capitalize",
-                }}
-              >
-                {item}
-              </Text>
-            </Chip>
-          )}
-        />
-        <View style={{ height: 100 }} />
-      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  tabsContainer: {
+    width: "100%",
+    backgroundColor: "transperent",
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 10,
+  },
   customHeader: {
     flexDirection: "row",
     alignItems: "center",

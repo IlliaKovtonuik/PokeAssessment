@@ -14,13 +14,11 @@ import {
   Provider as PaperProvider,
 } from "react-native-paper";
 
-// Адаптированные темы навигации
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
   reactNavigationDark: NavigationDarkTheme,
 });
 
-// Создаём контекст для темы
 export const ThemeContext = createContext({
   isDark: false,
   theme: LightTheme,
@@ -31,42 +29,23 @@ export const ThemeContextProvider = ({ children }: PropsWithChildren) => {
   const isDarkTheme = colorScheme === "dark";
   let theme = isDarkTheme ? DarkTheme : LightTheme;
 
-  // Предотвращаем автоматическое скрытие Splash Screen
   useEffect(() => {
-    SplashScreen.preventAutoHideAsync().catch(() => {
-      /* Игнорируем, если вызов уже выполнен */
-    });
+    SplashScreen.preventAutoHideAsync().catch(() => {});
   }, []);
 
-  // Загружаем кастомный шрифт
   const [fontsLoaded] = useFonts({
     CustomFont: require("../assets/fonts/CustomFont.ttf"),
-    // Можно добавить другие шрифты
   });
 
-  // Когда шрифты загрузились, скрываем Splash Screen
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
-  // Пока шрифты не загрузились, ничего не рендерим
   if (!fontsLoaded) {
     return null;
   }
-
-  // Расширяем тему, добавляя кастомные настройки шрифтов для react-native-paper
-  theme = {
-    ...theme,
-    fonts: {
-      ...theme.fonts,
-      pokeFont: {
-        fontFamily: "CustomFont",
-        fontWeight: "bold",
-      },
-    },
-  };
 
   return (
     <PaperProvider theme={theme}>
