@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Text, TextInput } from "react-native-paper";
 import PokeballBg from "@/components/PokeballBg/PokeballBg";
@@ -7,10 +7,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import { colors } from "@/config/theme/colors";
 import { usePokemons } from "@hooks/usePokemons";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect } from "expo-router";
 const HomeScreen = () => {
   const { top } = useSafeAreaInsets();
-  const isFocused = useIsFocused();
   const {
     query,
     setQuery,
@@ -23,11 +22,13 @@ const HomeScreen = () => {
     resetState,
   } = usePokemons();
 
-  useEffect(() => {
-    if (!isFocused) {
-      resetState();
-    }
-  }, [isFocused]);
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        resetState();
+      };
+    }, [])
+  );
   return (
     <View style={{ flex: 1 }} testID="home-screen">
       <View style={[styles.header, { paddingTop: top, alignItems: "center" }]}>

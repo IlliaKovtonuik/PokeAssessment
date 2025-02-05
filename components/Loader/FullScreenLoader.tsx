@@ -1,11 +1,12 @@
 import { ColorValue, View } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
-
+import React from "react";
 interface Props {
+  indicatorColor?: ColorValue;
   backgroundColor?: ColorValue;
 }
 
-const FullScreenLoader = ({ backgroundColor }: Props) => {
+const FullScreenLoader = ({ backgroundColor, indicatorColor }: Props) => {
   const { colors } = useTheme();
   const bgColor = backgroundColor ? backgroundColor : colors.background;
 
@@ -19,7 +20,7 @@ const FullScreenLoader = ({ backgroundColor }: Props) => {
         backgroundColor: bgColor,
       }}
     >
-      <ActivityIndicator color="white" size={50} />
+      <ActivityIndicator color={indicatorColor} size={50} />
     </View>
   );
 };

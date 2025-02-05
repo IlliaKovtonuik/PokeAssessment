@@ -1,15 +1,16 @@
 import { getPokemonById, getPokemonSpeciesById } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import { View, ScrollView, StyleSheet, FlatList, Image } from "react-native";
+import { View, StyleSheet } from "react-native";
 import FullScreenLoader from "@/components/Loader/FullScreenLoader";
 import { getTypeColor } from "@/config/helpers/getTypeColor";
 import { TabNavigator } from "@/navigation/TabNavigator";
 import { Header } from "@/components";
-import React, { Fragment } from "react";
+import { ThemeContext } from "@/utils/ThemeContext";
+import React, { useContext } from "react";
 const PokemonScreen = () => {
   const { pokemonId, reverse } = useLocalSearchParams();
-
+  const { isDark } = useContext(ThemeContext);
   const { isLoading, data: pokemon } = useQuery({
     queryKey: ["pokemon", pokemonId],
     queryFn: () => getPokemonById(Number(pokemonId)),
@@ -21,7 +22,7 @@ const PokemonScreen = () => {
     staleTime: 1000 * 60 * 60,
   });
   if (!pokemon || isLoading || !additionalInfo || isDataLoading) {
-    return <FullScreenLoader  />;
+    return <FullScreenLoader indicatorColor={isDark ? "white" : "black"} />;
   }
   const pokemonColor = getTypeColor(pokemon.types);
   return (
@@ -34,10 +35,7 @@ const PokemonScreen = () => {
         id={pokemon.id}
       />
       <View style={styles.tabsContainer}>
-        <TabNavigator
-          pokemon={pokemon}
-          additionalInfo={additionalInfo}
-        />
+        <TabNavigator pokemon={pokemon} additionalInfo={additionalInfo} />
       </View>
     </View>
   );

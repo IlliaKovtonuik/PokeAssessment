@@ -1,9 +1,8 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Pokeball } from "@/components";
-
+import { useRouter } from "expo-router";
 interface HeaderProps {
   backgroundColor: string;
   picture: string;
@@ -23,11 +22,10 @@ const Header = memo(function Header({
   id,
   types,
 }: HeaderProps) {
-  const navigation = useNavigation();
-
+  const router = useRouter();
   const handleGoBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    router.back();
+  }, [router]);
 
   const formattedId = useMemo(() => formatPokemonId(id), [id]);
 
