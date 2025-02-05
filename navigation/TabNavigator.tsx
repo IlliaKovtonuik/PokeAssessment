@@ -5,7 +5,7 @@ import {
   StatsTab,
   EvolutionTab,
   MovesTab,
-} from "@screens/Pokemon_temp/Tabs";
+} from "@screens/Pokemon/Tabs";
 import { colors } from "@/config/theme/colors";
 import { TabParamList } from "./types/types";
 
