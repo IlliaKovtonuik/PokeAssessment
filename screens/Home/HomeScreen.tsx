@@ -51,12 +51,12 @@ const HomeScreen = () => {
   });
 
   const displayData = query.trim()
-  ? localFiltered.length > 0
-    ? localFiltered
-    : searchData 
+    ? localFiltered.length > 0
+      ? localFiltered
+      : searchData
       ? [searchData]
       : []
-  : localPokemons;
+    : localPokemons;
   return (
     <View style={{ flex: 1 }} testID="home-screen">
       <View style={[styles.header, { paddingTop: top, alignItems: "center" }]}>
@@ -67,7 +67,6 @@ const HomeScreen = () => {
           value={query}
           onChangeText={setQuery}
           mode="outlined"
-          left={<TextInput.Icon icon="magnify" />}
           style={styles.searchInput}
           outlineStyle={{ borderRadius: 25 }}
         />
@@ -89,7 +88,7 @@ const HomeScreen = () => {
             <PokemonCard pokemon={item} testID={`pokemon-card-${item.name}`} />
           )}
           onEndReached={query.trim() ? null : () => fetchNextPage()}
-          onEndReachedThreshold={0.6} 
+          onEndReachedThreshold={0.6}
         />
       </View>
     </View>
