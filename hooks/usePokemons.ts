@@ -17,12 +17,15 @@ interface UsePokemonsResult {
   searchError: unknown;
   fetchNextPage: () => void;
   hasNextPage: boolean | undefined;
+  resetState: () => void;
 }
 
 export const usePokemons = (): UsePokemonsResult => {
   const queryClient: QueryClient = useQueryClient();
   const [query, setQuery] = useState<string>("");
-
+  const resetState = () => {
+    setQuery("");
+  };
   const {
     isLoading: isInitialLoading,
     data,
@@ -85,5 +88,6 @@ export const usePokemons = (): UsePokemonsResult => {
     searchError,
     fetchNextPage,
     hasNextPage,
+    resetState,
   };
 };

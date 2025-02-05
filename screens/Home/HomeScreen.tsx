@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Text, TextInput } from "react-native-paper";
 import PokeballBg from "@/components/PokeballBg/PokeballBg";
@@ -7,8 +7,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import { colors } from "@/config/theme/colors";
 import { usePokemons } from "@hooks/usePokemons";
+import { useIsFocused } from "@react-navigation/native";
 const HomeScreen = () => {
   const { top } = useSafeAreaInsets();
+  const isFocused = useIsFocused();
   const {
     query,
     setQuery,
@@ -18,8 +20,14 @@ const HomeScreen = () => {
     searchError,
     fetchNextPage,
     hasNextPage,
+    resetState,
   } = usePokemons();
 
+  useEffect(() => {
+    if (!isFocused) {
+      resetState();
+    }
+  }, [isFocused]);
   return (
     <View style={{ flex: 1 }} testID="home-screen">
       <View style={[styles.header, { paddingTop: top, alignItems: "center" }]}>
