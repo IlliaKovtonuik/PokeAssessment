@@ -5,9 +5,9 @@ import {
   StatsTab,
   EvolutionTab,
   MovesTab,
-} from "@screens/Pokemon/Tabs";
+} from "@screens/Pokemon_temp/Tabs";
 import { colors } from "@/config/theme/colors";
-import { TabParamList } from './types/types';
+import { TabParamList } from "./types/types";
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
 type Props = {
@@ -17,19 +17,19 @@ type Props = {
 export const TabNavigator: React.FC<Props> = ({ pokemon, additionalInfo }) => {
   return (
     <Tab.Navigator
-    testID="tab-navigator"
-    screenOptions={{
-      swipeEnabled: true,
-      tabBarStyle: {
-        backgroundColor: "transparent",
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-      },
-      tabBarIndicatorStyle: { backgroundColor: colors.tabIndicator },
-      tabBarLabelStyle: { textTransform: "capitalize" },
-    }}
-  >
+      testID="tab-navigator"
+      screenOptions={{
+        swipeEnabled: true,
+        tabBarStyle: {
+          backgroundColor: "transparent",
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        tabBarIndicatorStyle: { backgroundColor: colors.tabIndicator },
+        tabBarLabelStyle: { textTransform: "capitalize" },
+      }}
+    >
       <Tab.Screen
         name="About"
         component={AboutTab}
