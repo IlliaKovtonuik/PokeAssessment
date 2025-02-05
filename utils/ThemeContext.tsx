@@ -22,15 +22,12 @@ const { LightTheme, DarkTheme } = adaptNavigationTheme({
 
 export const ThemeContext = createContext({
   isDark: false,
-  // Початкове значення – хай буде Light, щоби TS не лаявся
   theme: LightTheme,
 });
 
 export const ThemeContextProvider = ({ children }: PropsWithChildren) => {
   const colorScheme = useColorScheme();
   const isDarkTheme = colorScheme === "dark";
-
-  // === 2) ВИБИРАЄМО ТЕМУ ЗАЛЕЖНО ВІД colorScheme ===
   const theme = isDarkTheme ? DarkTheme : LightTheme;
 
   useEffect(() => {
