@@ -52,7 +52,7 @@ export interface PokemonSpeciesResponse {
   evolution_chain: { url: string };
   evolves_from_species: NamedAPIResource | null;
   flavor_text_entries: FlavorTextEntry[];
-  form_descriptions: any[];
+  form_descriptions: unknown[];
   forms_switchable: boolean;
   gender_rate: number;
   genera: Genus[];
@@ -80,22 +80,30 @@ export interface PokeAPIPokemon {
   forms: Species[];
   game_indices: GameIndex[];
   height: number;
-  held_items: any[];
+  held_items: HeldItem[];
   id: number;
   is_default: boolean;
   location_area_encounters: string;
   moves: Move[];
   name: string;
   order: number;
-  past_abilities: any[];
-  past_types: any[];
+  past_abilities: unknown[];
+  past_types: unknown[];
   species: Species;
   sprites: Sprites;
   stats: Stat[];
   types: Type[];
   weight: number;
 }
+export interface HeldItem {
+  item: NamedAPIResource;
+  version_details: VersionDetail[];
+}
 
+export interface VersionDetail {
+  rarity: number;
+  version: NamedAPIResource;
+}
 export interface Ability {
   ability: Species;
   is_hidden: boolean;

@@ -24,7 +24,6 @@ export interface Pokemon {
   types: PokemonType[];
   avatar: string;
   sprites: string[];
-
   games: string[];
   stats: Stat[];
   abilities: string[];

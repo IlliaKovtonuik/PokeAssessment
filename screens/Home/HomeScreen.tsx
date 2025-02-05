@@ -1,10 +1,4 @@
-import React, { useState } from "react";
-import { getPokemons, getPokemonByName } from "@/api";
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Text, TextInput } from "react-native-paper";
 import PokeballBg from "@/components/PokeballBg/PokeballBg";
@@ -12,51 +6,20 @@ import { theme } from "@/config/theme/global-theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import { colors } from "@/config/theme/colors";
-
+import { usePokemons } from "@hooks/usePokemons";
 const HomeScreen = () => {
-  const queryClient = useQueryClient();
   const { top } = useSafeAreaInsets();
-  const [query, setQuery] = useState("");
-
-  const { isLoading, data, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["pokemons", "infinite"],
-    initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
-    queryFn: async ({ pageParam }) => {
-      const pokemons = await getPokemons(pageParam);
-      pokemons.forEach((pokemon) => {
-        queryClient.setQueryData(["pokemon", pokemon.id], pokemon);
-      });
-      return pokemons;
-    },
-    getNextPageParam: (lastPage, pages) => pages.length,
-  });
-
-  const localPokemons = data?.pages.flat() ?? [];
-  const localFiltered = query.trim()
-    ? localPokemons.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(query.toLowerCase())
-      )
-    : localPokemons;
-
   const {
-    data: searchData,
-    isLoading: isSearchLoading,
-    error: searchError,
-  } = useQuery({
-    queryKey: ["search", query],
-    queryFn: () => getPokemonByName(query),
-    enabled: query.trim().length > 0 && localFiltered.length === 0,
-    retry: false,
-  });
+    query,
+    setQuery,
+    displayData,
+    isInitialLoading,
+    isSearchLoading,
+    searchError,
+    fetchNextPage,
+    hasNextPage,
+  } = usePokemons();
 
-  const displayData = query.trim()
-    ? localFiltered.length > 0
-      ? localFiltered
-      : searchData
-      ? [searchData]
-      : []
-    : localPokemons;
   return (
     <View style={{ flex: 1 }} testID="home-screen">
       <View style={[styles.header, { paddingTop: top, alignItems: "center" }]}>
@@ -73,7 +36,9 @@ const HomeScreen = () => {
         {isSearchLoading && (
           <Text testID="searching-indicator">Searching...</Text>
         )}
-        {searchError && <Text testID="error-message">Pokémon not found</Text>}
+        {Boolean(searchError) && (
+          <Text testID="error-message">Pokémon not found</Text>
+        )}
       </View>
 
       <PokeballBg style={styles.imgPosition} />

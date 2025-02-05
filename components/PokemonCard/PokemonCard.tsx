@@ -1,4 +1,4 @@
-import { Pokemon } from "../../domain/entities/pokemon";
+import { Pokemon } from "@/domain/entities/pokemon";
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { FadeInImage } from "@/components";
@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { ThemeContext } from "@/utils/ThemeContext";
 import { PokemonTypeChip } from "@/components";
+import React from "react";
 interface Props {
   pokemon: Pokemon;
 }

@@ -8,11 +8,12 @@ import {
 } from "@screens/Pokemon/Tabs";
 import { colors } from "@/config/theme/colors";
 import { TabParamList } from "./types/types";
-
+import { DetailedInfo } from "./types/types";
+import { Pokemon } from "@/domain/entities/pokemon";
 const Tab = createMaterialTopTabNavigator<TabParamList>();
 type Props = {
-  pokemon: any;
-  additionalInfo: any;
+  pokemon: Pokemon;
+  additionalInfo: DetailedInfo;
 };
 export const TabNavigator: React.FC<Props> = ({ pokemon, additionalInfo }) => {
   return (

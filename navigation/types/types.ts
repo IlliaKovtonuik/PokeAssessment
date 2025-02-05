@@ -1,3 +1,4 @@
+import { Pokemon } from "@domain/entities/pokemon";
 export type TabParamList = {
   About: { data: Pokemon; info: DetailedInfo };
   Stats: {
@@ -24,7 +25,7 @@ interface Move {
   name: string;
   level: number;
 }
-interface DetailedInfo {
+export interface DetailedInfo {
   base_happiness: number;
   capture_rate: number;
   habitat?: {
@@ -37,12 +38,6 @@ interface DetailedInfo {
   flavor_text_entries: FlavorTextEntry[];
 }
 
-interface Pokemon {
-  abilities: Ability[];
-  avatar: string;
-  name: string;
-  id: number;
-}
 type Color = {
   name: string;
   url: string;

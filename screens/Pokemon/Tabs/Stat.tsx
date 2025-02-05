@@ -28,11 +28,13 @@ export const Stat: FC<StatProps> = ({
   };
 
   const progressPercentage = Math.min((baseStat / maxStat) * 100, 100);
-  const progressColor = isTotal
-    ? blue[500]
-    : baseStat < 75
-    ? red[500]
-    : green[500];
+  const getProgressColor = (isTotal: boolean, baseStat: number): string => {
+    if (isTotal) {
+      return blue[500];
+    }
+
+    return baseStat < 75 ? red[500] : green[500];
+  };
 
   return (
     <Box sx={styles.statRow}>
@@ -43,7 +45,7 @@ export const Stat: FC<StatProps> = ({
           sx={{
             ...styles.progressBar,
             width: `${progressPercentage}%`,
-            backgroundColor: progressColor,
+            backgroundColor: getProgressColor(isTotal, baseStat),
           }}
         />
       </Box>

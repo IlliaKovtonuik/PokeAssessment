@@ -6,7 +6,7 @@ export type Species = {
   evolution_chain: EvolutionChain;
   evolves_from_species: null;
   flavor_text_entries: FlavorTextEntry[];
-  form_descriptions: any[];
+  form_descriptions: unknown[];
   forms_switchable: boolean;
   gender_rate: number;
   genera: Genus[];

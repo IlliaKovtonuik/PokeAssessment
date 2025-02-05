@@ -5,7 +5,7 @@ import type {
 import { pokeApi } from "@config/api/pokeApi";
 import { Pokemon } from "@domain/entities/pokemon";
 import { PokemonMapper } from "@utils/helpers/mappers/pokemon.mapper";
-
+import axios, { AxiosError } from "axios";
 export const getPokemons = async (
   page: number,
   limit: number = 20
@@ -28,7 +28,13 @@ export const getPokemons = async (
     );
 
     return pokemons;
-  } catch (error) {
-    throw new Error("Error getting Pokemons");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(`Axios error: ${error.message}`);
+    } else if (error instanceof Error) {
+      throw new Error(`Unexpected error: ${error.message}`);
+    } else {
+      throw new Error("Unknown error occurred while fetching Pokémons.");
+    }
   }
 };
