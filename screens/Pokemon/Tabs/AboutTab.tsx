@@ -1,5 +1,5 @@
 "use dom";
-import React, { FC,useState,useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -17,23 +17,23 @@ const AboutTab: React.FC<AboutTabProps> = ({ route, navigation }) => {
   const { data, info } = route.params;
   const pokemon = data;
   const [isLoading, setIsLoading] = useState(true);
-  
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1500);
-  
-      return () => clearTimeout(timer);
-    }, []);
-  
-  
-    if (isLoading) {
-      return (
-        <Box sx={styles.loaderContainer}>
-          <CircularProgress size={50} color="primary" />
-        </Box>
-      );
-    }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Box sx={styles.loaderContainer}>
+        <CircularProgress size={50} color="primary" />
+      </Box>
+    );
+  }
+  const flavor_text_entries = info.flavor_text_entries;
   const detailedInfo = info;
   const eggGroups = detailedInfo.egg_groups.map((item) => item.name).join(", ");
   return (
@@ -44,7 +44,7 @@ const AboutTab: React.FC<AboutTabProps> = ({ route, navigation }) => {
 
       <Paper elevation={3} sx={styles.infoBox}>
         <Typography variant="body1" sx={styles.flavorText}>
-          {getEnglishFlavorText(detailedInfo)}
+          {getEnglishFlavorText(flavor_text_entries)}
         </Typography>
 
         {[
@@ -89,8 +89,8 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "100vh", 
-    backgroundColor: "#f9f9f9", 
+    height: "100vh",
+    backgroundColor: "#f9f9f9",
   },
   infoBox: {
     p: 2,

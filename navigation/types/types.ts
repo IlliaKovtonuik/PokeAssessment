@@ -34,6 +34,7 @@ interface DetailedInfo {
   is_mythical: boolean;
   is_legendary: boolean;
   egg_groups: EggGroup[];
+  flavor_text_entries: FlavorTextEntry[];
 }
 
 interface Pokemon {
@@ -42,6 +43,16 @@ interface Pokemon {
   name: string;
   id: number;
 }
+type Color = {
+  name: string;
+  url: string;
+};
+type FlavorTextEntry = {
+  flavor_text: string;
+  language: Color;
+  version: Color;
+};
+
 interface Ability {
   name: string;
 }
