@@ -1,71 +1,46 @@
 "use dom";
-import React, { FC, useState, useRef, useEffect } from "react";
-import { Box, CircularProgress, Grid } from "@mui/material";
+import React, { FC, useState } from "react";
+import { Box, CircularProgress, Paper } from "@mui/material";
+import Grid from "@mui/material/Grid2"; // Імпортуємо Grid2
 import { motion } from "framer-motion";
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { TabParamList } from '@/navigation/types/types';
+import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
+import { TabParamList } from "@/navigation/types/types";
 
-
-type EvolutionTabProps = MaterialTopTabScreenProps<TabParamList, 'Skins'>;
-
+type EvolutionTabProps = MaterialTopTabScreenProps<TabParamList, "Skins">;
 
 const EvolutionTab: FC<EvolutionTabProps> = ({ route }) => {
   const { data } = route.params;
   const { sprites } = data;
-  const [isLoading, setIsLoading] = useState(true);
-  const isMounted = useRef(true);
+  const [loadedSprites, setLoadedSprites] = useState<number[]>([]);
 
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  const handleLoad = () => {
-    if (isMounted.current) {
-      setIsLoading(false);
-    }
+  const handleLoad = (index: number) => {
+    setLoadedSprites((prev) => [...prev, index]);
   };
-  
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1500);
-  
-      return () => clearTimeout(timer);
-    }, []);
-  
-  
-    if (isLoading) {
-      return (
-        <Box sx={styles.loaderContainer}>
-          <CircularProgress size={50} color="primary" />
-        </Box>
-      );
-    }
+
   return (
     <Box sx={styles.container}>
       <Grid container spacing={2} sx={styles.gridContainer}>
-        {sprites.map((sprite, index) => (
-          <Grid item xs={6} key={`${sprite}-${index}`}>
-            <Box sx={styles.imageWrapper}>
+        {sprites.map((sprite: string, index: number) => (
+          <Grid size={6} key={`${sprite}-${index}`}>
+            <Paper sx={styles.imageWrapper}>
               <Box sx={styles.imageContainer}>
-                {isLoading && <CircularProgress size={40} color="secondary" />}
+                {!loadedSprites.includes(index) && (
+                  <CircularProgress size={40} color="secondary" />
+                )}
                 <motion.img
                   src={sprite}
-                  onLoad={handleLoad}
+                  onLoad={() => handleLoad(index)}
                   style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "contain",
-                    opacity: isLoading ? 0 : 1,
                   }}
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: isLoading ? 0 : 1 }}
+                  animate={{ opacity: loadedSprites.includes(index) ? 1 : 0 }}
                   transition={{ duration: 0.5 }}
                 />
               </Box>
-            </Box>
+            </Paper>
           </Grid>
         ))}
       </Grid>
@@ -74,25 +49,18 @@ const EvolutionTab: FC<EvolutionTabProps> = ({ route }) => {
 };
 
 export default EvolutionTab;
+
 const styles = {
   container: {
     p: 2,
-    height: "100vh", 
+    height: "100vh",
     overflowY: "auto",
-    backgroundColor: "#fafafa", 
+    backgroundColor: "#fafafa",
     display: "flex",
     justifyContent: "center",
   },
   gridContainer: {
     width: "100%",
-  },
-  loaderContainer: {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh", 
-    backgroundColor: "#f9f9f9", 
   },
   imageWrapper: {
     width: "100%",
@@ -100,10 +68,8 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f0f0f0",
     borderRadius: 8,
-    padding: 1,
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    backgroundColor: "#f0f0f0",
   },
   imageContainer: {
     width: 180,
@@ -112,7 +78,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
     borderRadius: 8,
     overflow: "hidden",
   },

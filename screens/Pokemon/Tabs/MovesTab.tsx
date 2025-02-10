@@ -1,18 +1,24 @@
 "use dom";
 import React, { FC } from "react";
-import { Box, Grid, Typography, Paper } from "@mui/material";
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { TabParamList } from '@/navigation/types/types';
-type MovesTabProps = MaterialTopTabScreenProps<TabParamList, 'Moves'>;
+import { Box, Typography, Paper } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
+import { TabParamList } from "@/navigation/types/types";
+
+type MovesTabProps = MaterialTopTabScreenProps<TabParamList, "Moves">;
+
 const MovesTab: FC<MovesTabProps> = ({ route }) => {
   const { data } = route.params;
   const { moves } = data;
+  const sortedMoves = moves
+    .slice()
+    .sort((a, b) => a.name.length - b.name.length);
 
   return (
     <Box sx={styles.container}>
       <Grid container spacing={2}>
-        {moves.map((move) => (
-          <Grid item xs={4} key={move.name}>
+        {sortedMoves.map((move) => (
+          <Grid size={4} key={move.name}>
             <Paper elevation={2} sx={styles.itemContainer}>
               <Typography sx={styles.itemName}>{move.name}</Typography>
               <Typography sx={styles.itemLevel}>{move.level} lvl</Typography>
@@ -23,7 +29,9 @@ const MovesTab: FC<MovesTabProps> = ({ route }) => {
     </Box>
   );
 };
+
 export default MovesTab;
+
 const styles = {
   container: {
     py: 2,

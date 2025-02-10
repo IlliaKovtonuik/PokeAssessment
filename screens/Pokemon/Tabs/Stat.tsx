@@ -9,13 +9,7 @@ interface StatProps {
   maxStat: number;
   isTotal?: boolean;
 }
-
-export const Stat: FC<StatProps> = ({
-  name,
-  baseStat,
-  maxStat,
-  isTotal = false,
-}) => {
+const Stat: FC<StatProps> = ({ name, baseStat, maxStat, isTotal = false }) => {
   const statisticName = (name: string): string => {
     switch (name) {
       case "special-attack":
@@ -52,7 +46,7 @@ export const Stat: FC<StatProps> = ({
     </Box>
   );
 };
-
+export default Stat;
 const styles = {
   statRow: {
     display: "flex",
