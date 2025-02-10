@@ -10,12 +10,11 @@ import { colors } from "@/config/theme/colors";
 import { TabParamList } from "./types/types";
 import { DetailedInfo } from "./types/types";
 import { Pokemon } from "@/domain/entities/pokemon";
+import { usePokemonContext } from "@/utils/PokemonContext";
 const Tab = createMaterialTopTabNavigator<TabParamList>();
-type Props = {
-  pokemon: Pokemon;
-  additionalInfo: DetailedInfo;
-};
-export const TabNavigator: React.FC<Props> = ({ pokemon, additionalInfo }) => {
+
+export const TabNavigator: React.FC = () => {
+  const { pokemon, additionalInfo } = usePokemonContext();
   return (
     <Tab.Navigator
       testID="tab-navigator"
@@ -29,6 +28,8 @@ export const TabNavigator: React.FC<Props> = ({ pokemon, additionalInfo }) => {
         },
         tabBarIndicatorStyle: { backgroundColor: colors.tabIndicator },
         tabBarLabelStyle: { textTransform: "capitalize" },
+        tabBarPressColor: colors.red,
+        tabBarPressOpacity: 0.5,
       }}
     >
       <Tab.Screen

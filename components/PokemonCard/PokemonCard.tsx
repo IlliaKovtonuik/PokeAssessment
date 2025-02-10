@@ -48,7 +48,7 @@ const PokemonCard = ({ pokemon }: Props) => {
 
         {/* Pokemon Image */}
         <FadeInImage
-          testID="pokemon-image" // ✅ Added testID
+          testID="pokemon-image"
           uri={pokemon.avatar}
           style={styles.pokemonImage}
         />

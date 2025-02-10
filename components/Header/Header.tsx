@@ -24,7 +24,9 @@ const Header = memo(function Header({
 }: HeaderProps) {
   const router = useRouter();
   const handleGoBack = useCallback(() => {
-    router.back();
+    router.navigate({
+      pathname: "/",
+    });
   }, [router]);
 
   const formattedId = useMemo(() => formatPokemonId(id), [id]);
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
   cta: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 50,
+    marginTop: 26,
     width: "100%",
     paddingHorizontal: 20,
     marginBottom: 20,
