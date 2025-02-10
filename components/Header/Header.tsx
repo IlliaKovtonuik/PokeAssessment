@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   cta: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 26,
+    marginTop: 46,
     width: "100%",
     paddingHorizontal: 20,
     marginBottom: 20,
