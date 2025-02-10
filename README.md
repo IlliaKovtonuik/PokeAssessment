@@ -1,3 +1,14 @@
+# PokeDexAssessment
+
+## Changelog
+- Fixed rendering on the Skins screen, elements are now aligned.
+- Added sorting on the Moves screen for a better UI experience.
+- Slightly reworked rendering on the About page, combining DOM components with React Native elements.
+- Added KeyboardAvoidingView for improved interaction with search and keyboard.
+- Extracted server requests into separate hooks.
+- Created a context to pass data to components instead of using props.
+- Replaced Grid with Grid 2.0
+
 
 ## Get started
 1. Clone project
