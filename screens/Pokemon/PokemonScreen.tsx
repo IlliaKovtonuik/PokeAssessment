@@ -8,36 +8,36 @@ import { TabNavigator } from "@/navigation/TabNavigator";
 import { Header } from "@/components";
 import { ThemeContext } from "@/utils/ThemeContext";
 import React, { useContext } from "react";
+import { usePokemon } from "@/hooks/usePokemon";
+import { usePokemonSpecies } from "@/hooks/usePokemonSpecies";
+import { PokemonProvider } from "@/utils/PokemonContext";
 const PokemonScreen = () => {
   const { pokemonId, reverse } = useLocalSearchParams();
   const { isDark } = useContext(ThemeContext);
-  const { isLoading, data: pokemon } = useQuery({
-    queryKey: ["pokemon", pokemonId],
-    queryFn: () => getPokemonById(Number(pokemonId)),
-    staleTime: 1000 * 60 * 60,
-  });
-  const { isLoading: isDataLoading, data: additionalInfo } = useQuery({
-    queryKey: ["pokemonInfo", pokemonId],
-    queryFn: () => getPokemonSpeciesById(Number(pokemonId)),
-    staleTime: 1000 * 60 * 60,
-  });
-  if (!pokemon || isLoading || !additionalInfo || isDataLoading) {
+  const id = Array.isArray(pokemonId) ? pokemonId[0] : pokemonId;
+  const { isLoading: isPokemonLoading, data: pokemon } = usePokemon(id);
+  const { isLoading: isSpeciesLoading, data: additionalInfo } =
+    usePokemonSpecies(id);
+
+  if (!pokemon || isPokemonLoading || !additionalInfo || isSpeciesLoading) {
     return <FullScreenLoader indicatorColor={isDark ? "white" : "black"} />;
   }
   const pokemonColor = getTypeColor(pokemon.types);
   return (
-    <View testID="pokemon-screen" style={styles.container}>
-      <Header
-        backgroundColor={pokemonColor[0]}
-        picture={pokemon?.avatar}
-        name={pokemon.name}
-        types={pokemon?.types}
-        id={pokemon.id}
-      />
-      <View style={styles.tabsContainer}>
-        <TabNavigator pokemon={pokemon} additionalInfo={additionalInfo} />
+    <PokemonProvider pokemon={pokemon} additionalInfo={additionalInfo}>
+      <View testID="pokemon-screen" style={styles.container}>
+        <Header
+          backgroundColor={pokemonColor[0]}
+          picture={pokemon?.avatar}
+          name={pokemon.name}
+          types={pokemon?.types}
+          id={pokemon.id}
+        />
+        <View style={styles.tabsContainer}>
+          <TabNavigator />
+        </View>
       </View>
-    </View>
+    </PokemonProvider>
   );
 };
 
