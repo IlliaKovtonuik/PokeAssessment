@@ -8,6 +8,7 @@
 - Extracted server requests into separate hooks.
 - Created a context to pass data to components instead of using props.
 - Replaced Grid with Grid 2.0
+- Fixed the search field; it is now fully clickable.
 
 
 ## Get started
