@@ -49,6 +49,7 @@ const HomeScreen = () => {
           <View
             style={[styles.header, { paddingTop: top, alignItems: "center" }]}
           >
+            <PokeballBg style={styles.imgPosition} />
             <Text style={styles.title}>Pokedex</Text>
             <TextInput
               testID="search-input"
@@ -66,8 +67,6 @@ const HomeScreen = () => {
               <Text testID="error-message">Pokémon not found</Text>
             )}
           </View>
-
-          <PokeballBg style={styles.imgPosition} />
 
           <View style={theme.globalMargin}>
             <FlatList
